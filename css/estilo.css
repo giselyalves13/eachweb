@@ -1,0 +1,228 @@
+/*
+*
+*@author Gisely Alves Brandão
+*@version 0.1
+*/
+
+/* ========= layout =====*/
+
+html,body, .capa {
+	height: 100%; 
+
+}
+
+
+body{
+	background: url('../img/capa.JPG'),
+				
+				linear-gradient(50deg, #7c26f8 ,black);
+
+	background-attachment: fixed;/* faz o backgroud ficar parado	*/
+	font-family: Helvetica,Arial,sans-serif;
+	overflow-x: hidden;
+	background-size: 100%;
+}
+
+.capa{
+	display: table;
+	width: 100%;
+}
+
+#capa{
+	width: 100%;
+	height: 65%;
+}
+
+.texto-capa{
+	
+	position: absolute;
+	text-align: center;
+	display: table-cell;
+	vertical-align: middle;
+	z-index: 10;
+	margin-top: 120px;
+	width: 100%;
+	padding: none;
+	
+}
+
+.texto-capa> h1{
+	text-align: center;
+	font-size: 65px;
+	font-weight: 900;
+	letter-spacing: -.02em;
+	padding-top: 80px;
+	line-height: 1.2;
+	font-family: inherit;
+	color: white;
+}
+
+.texto-capa>p{
+	padding-top: 30px;
+	font-size: 20px;
+	color: white;	
+}
+
+.btn-custom{
+	color: white;
+	border-radius: 500px;
+	-webkit-border-radius: 500px;
+	-moz-border-radius: 500px;
+	padding: 18px 48px 16px;
+	margin: 0px 15px;
+	margin-top: 120px;
+	text-transform: uppercase;
+	transition: background 0.4s, color 0.4s;
+	font-weight: bold;
+	font-size: 14px;
+	letter-spacing: 2px;
+	margin-bottom: 10px;
+	line-height: 1;
+
+}
+.btn-roxo{
+	background: #6009EB;
+	/* #7c25f8;*/
+
+}
+.btn-roxo:hover {
+	background: #7c25f8;
+	color: white;
+}
+.btn-branco{
+	border: 2px solid white;
+}
+
+.btn-branco:hover {
+	background: white;
+	color: black;
+}
+
+.navbar{
+	background-color: white;
+	box-shadow: 3px 3px 50px black;
+	border: rgba(0,0,0,0.3);
+	padding: 10px;
+	position: relative;
+}
+
+nav .navbar-transparente{
+	
+	background: white;
+	border:none;
+	
+}
+.navbar-brand{
+	height: 100%;
+	padding: 0px;
+	width: auto;
+	display: block;
+	margin-top: 10%;
+	text-align: center;
+	
+}
+.navbar-brand> img{
+	margin: 0px;
+	height: 55px;
+
+}
+
+.navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>li>a, footer .nav a {
+	color: #089de3;
+	background: none;
+	font-size: 18px;
+}
+.navbar-inverse .navbar-nav>.active>a:hover, .navbar-inverse .navbar-nav>li>a:hover, footer .nav a:hover {
+	color: #6009EB;
+	background: none;
+}
+
+#bs-example-navbar-collapse-1{
+	float: right;
+	
+}
+
+
+
+footer{
+	background: white;
+	box-shadow: 3px 3px 50px black;
+	border: rgba(0,0,0,0.3);
+	
+}
+.rodape-esq{
+	padding-top: 20px;
+	float: left;
+	margin-bottom: 20px;
+}
+.rodape-dir{
+	float: right;
+
+}
+
+#rodape h4{
+	color: #6009EB;
+	font-size: 15px;
+	text-transform: uppercase;
+
+}
+
+#img-rodape{
+	float: right;
+	height: 140px;
+	margin: 5px;
+}
+
+
+h2{
+	color: #089de3;
+	font-size: 30px;
+	font-weight: 700;
+	letter-spacing: -0.04em;
+}
+h6, h5{
+	color: #6009EB;
+	font-weight: 700;
+	letter-spacing: -0.04em;
+}
+a{
+	color: #6009EB;
+	/*#7c25f8;*/
+}
+a:hover{
+	color: #089de3;
+	/*#BA55D3;*/
+}
+
+.opt, .mapa>div{
+	display: block;
+	width: 100%;
+	margin: auto;
+	margin-bottom: 20px;
+	background-color: white;
+	padding: 20px;
+	height: 100%;
+	position: relative;
+
+	
+}
+.mapa{
+	height: 100%;
+
+
+}
+.opcoes .input-group{
+	margin: 10px;
+	position: relative;
+
+}
+.opcoes .chk {
+	display: inline-block;
+	 margin-right: 30px;
+
+}
+
+.container{
+	height: 59%;
+}
+
