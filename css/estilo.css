@@ -13,93 +13,15 @@ html,body, .capa {
 
 
 body{
-	background: url('../img/capa.JPG'),
-				
-				linear-gradient(50deg, #7c26f8 ,black);
-
-	background-attachment: fixed;/* faz o backgroud ficar parado	*/
+	background:	linear-gradient(50deg, #7FFFD4 ,black);
 	font-family: Helvetica,Arial,sans-serif;
 	overflow-x: hidden;
 	background-size: 100%;
 }
 
-.capa{
-	display: table;
-	width: 100%;
-}
-
-#capa{
-	width: 100%;
-	height: 65%;
-}
-
-.texto-capa{
-	
-	position: absolute;
-	text-align: center;
-	display: table-cell;
-	vertical-align: middle;
-	z-index: 10;
-	margin-top: 120px;
-	width: 100%;
-	padding: none;
-	
-}
-
-.texto-capa> h1{
-	text-align: center;
-	font-size: 65px;
-	font-weight: 900;
-	letter-spacing: -.02em;
-	padding-top: 80px;
-	line-height: 1.2;
-	font-family: inherit;
-	color: white;
-}
-
-.texto-capa>p{
-	padding-top: 30px;
-	font-size: 20px;
-	color: white;	
-}
-
-.btn-custom{
-	color: white;
-	border-radius: 500px;
-	-webkit-border-radius: 500px;
-	-moz-border-radius: 500px;
-	padding: 18px 48px 16px;
-	margin: 0px 15px;
-	margin-top: 120px;
-	text-transform: uppercase;
-	transition: background 0.4s, color 0.4s;
-	font-weight: bold;
-	font-size: 14px;
-	letter-spacing: 2px;
-	margin-bottom: 10px;
-	line-height: 1;
-
-}
-.btn-roxo{
-	background: #6009EB;
-	/* #7c25f8;*/
-
-}
-.btn-roxo:hover {
-	background: #7c25f8;
-	color: white;
-}
-.btn-branco{
-	border: 2px solid white;
-}
-
-.btn-branco:hover {
-	background: white;
-	color: black;
-}
 
 .navbar{
-	background-color: white;
+	background-color: rgba(105,105,105,0.1);
 	box-shadow: 3px 3px 50px black;
 	border: rgba(0,0,0,0.3);
 	padding: 10px;
@@ -120,13 +42,19 @@ nav .navbar-transparente{
 	margin-top: 10%;
 	text-align: center;
 	
+	
 }
 .navbar-brand> img{
 	margin: 0px;
 	height: 55px;
 
 }
-
+.navbar-inverse .navbar-brand{
+	color: #363636;
+	line-height: 15px;
+	font-size: 20px;
+	
+}
 .navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>li>a, footer .nav a {
 	color: #089de3;
 	background: none;
@@ -139,38 +67,32 @@ nav .navbar-transparente{
 
 #bs-example-navbar-collapse-1{
 	float: right;
+	width: 200px;
+	position: relative;
+
+
+}
+.dropdown>button{
+	background: transparent;
+	color: white;
+}
+
+#bs-example-navbar-collapse-1 li ul {
+	right: 0;
+/* tentativa de deixar o dropdown alinhado a esqueda do botão*/
+}
+#bs-example-navbar-collapse-1 ul li{
+	position: relative;
+	display: inline-block;
+	right: 0;
+}
+
+#bs-example-navbar-collapse-1 .dropdown{
+	right: 0;
+	width: 200px;
+	margin-left: 40px;
+
 	
-}
-
-
-
-footer{
-	background: white;
-	box-shadow: 3px 3px 50px black;
-	border: rgba(0,0,0,0.3);
-	
-}
-.rodape-esq{
-	padding-top: 20px;
-	float: left;
-	margin-bottom: 20px;
-}
-.rodape-dir{
-	float: right;
-
-}
-
-#rodape h4{
-	color: #6009EB;
-	font-size: 15px;
-	text-transform: uppercase;
-
-}
-
-#img-rodape{
-	float: right;
-	height: 140px;
-	margin: 5px;
 }
 
 
@@ -223,6 +145,6 @@ a:hover{
 }
 
 .container{
-	height: 59%;
+	height: 63%;
 }
 
