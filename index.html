@@ -63,10 +63,10 @@
 
           <div class="input-group">
             <span class="chk">
-              <input type="checkbox" aria-label="..."> Ônibus em movimento
+              <input type="checkbox" id="chkbus" onclick="chksbusfunction()" aria-label="..."> Ônibus em movimento
             </span>
             <span class="chk">
-              <input type="checkbox" aria-label="..."> Paradas de ônibus
+              <input type="checkbox" id="chkstop" onclick="chkstopfunction()" aria-label="..."> Paradas de ônibus
             </span>
           </div><!-- /input-group -->           
 
@@ -115,11 +115,39 @@
 
       function initMap() {
         var uluru = {lat: -23.481996 , lng: -46.500503};
-        var map = new google.maps.Map(document.getElementById('map'), {
+        var chkstop = document.getElementById("chkstop");
+        var myOptions;
+
+        if(chkstop.checked){
+          myOptions = {
+            zoom: 16,
+            center: uluru,
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            styles: [{
+              "featureType": "transit.station.bus",
+              "stylers": [{
+                "visibility": "on"
+              }]
+            }]
+          };
+
+        }else{
+          myOptions = {
           zoom: 16,
-          center: uluru
-          
-        });
+          center: uluru,
+          mapTypeId: google.maps.MapTypeId.ROADMAP,
+          styles: [{
+            "featureType": "transit.station.bus",
+            "stylers": [{
+              "visibility": "off"
+              }]
+            }]
+          };
+        }
+        
+
+        var map = new google.maps.Map(document.getElementById('map'), myOptions);
+
         var infoWindow = new google.maps.InfoWindow({map: map});
 
         // Try HTML5 geolocation.
@@ -144,7 +172,9 @@
           map: map,
           anchorPoint: new google.maps.Point(0, -29)
         });
-        // Create the autocomplete object, restricting the search to geographical
+        
+
+        // Create the autocomplete object, restricting the search to geographical------------------
         // location types.
         autocomplete = new google.maps.places.Autocomplete(
           /** @type {!HTMLInputElement} */(document.getElementById('autocompleteb')),
@@ -193,8 +223,35 @@
           infoWindow.setContent('<div><strong>' + place.name + '</strong><br>' + address);
           infoWindow.open(map, marker);
         });
+        //ends autocomplete------------
+
+
+        //opções das checkbox------------
+
+        
+        /*
+        document.getElementById("chkstop").onclick = function(){
+          if(chkstop.checked){
+            var myOptions = {
+          zoom: 16,
+          center: uluru,
+          mapTypeId: google.maps.MapTypeId.ROADMAP,
+          styles: [{
+            "featureType": "transit.station.bus",
+            "stylers": [{
+              "visibility": "on"
+            }]
+          }]
+        };
+
+        var map = new google.maps.Map(document.getElementById('map'), myOptions);
+
+          }
+        }  */
 
       }
+      //ends initmap()---------------------------------->
+
       function handleLocationError(browserHasGeolocation, infoWindow, pos) {
         infoWindow.setPosition(pos);
         infoWindow.setContent(browserHasGeolocation ?
@@ -202,6 +259,18 @@
           'Error: Your browser doesn\'t support geolocation.');
       }
 
+      function chkstopfunction (){
+        if (document.getElementById("chkstop").checked){
+          initMap();
+        }else{
+          initMap();
+        }
+      }
+       function chksbusfunction (){
+        
+      }
+
+     
     </script>
 
 
