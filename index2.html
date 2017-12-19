@@ -118,7 +118,11 @@
           <div class="input-group">
             <input id="autocompleteb" type="text"  class="form-control"  placeholder="Escreva o endereço" ">
             <span class="input-group-btn">
+<<<<<<< HEAD
               <button class="btn btn-default" type="button" onclick="fazerRequisicao()" >Buscar</button>
+=======
+              <button id="searchbutton" class="btn btn-default" type="button">Buscar</button>
+>>>>>>> 5524adac6e87e70cb4e079dafbc1e57f94e74a3e
             </span>
           </div><!-- /input-group -->
           <div class="input-group" id="div_conteudo">
@@ -139,7 +143,7 @@
     <?php include 'apisptrans.php' ?>
 
     <script>
-      var map, places;
+      var map, places, infoWindow, marker;
       var autocomplete;
       var componentForm = {
         street_number: 'short_name',
@@ -178,20 +182,28 @@
           };
         }else{
           myOptions = {
-          zoom: 16,
-          center: uluru,
-          mapTypeId: google.maps.MapTypeId.ROADMAP,
-          styles: [{
-            "featureType": "transit.station.bus",
-            "stylers": [{
-              "visibility": "off"
+            zoom: 16,
+            center: uluru,
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            styles: [{
+              "featureType": "transit.station.bus",
+              "stylers": [{
+                "visibility": "off"
               }]
             }]
           };
         }
         
+<<<<<<< HEAD
         var map = new google.maps.Map(document.getElementById('map'), myOptions);
         var infoWindow = new google.maps.InfoWindow({map: map});
+=======
+
+        map = new google.maps.Map(document.getElementById('map'), myOptions);
+
+        infoWindow = new google.maps.InfoWindow({map: map});
+
+>>>>>>> 5524adac6e87e70cb4e079dafbc1e57f94e74a3e
         // Try HTML5 geolocation.
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(function(position) {
@@ -209,7 +221,12 @@
           // Browser doesn't support Geolocation
           handleLocationError(false, infoWindow, map.getCenter());
         }
+<<<<<<< HEAD
         var marker = new google.maps.Marker({
+=======
+
+        marker = new google.maps.Marker({
+>>>>>>> 5524adac6e87e70cb4e079dafbc1e57f94e74a3e
           map: map,
           anchorPoint: new google.maps.Point(0, -29)
         });
@@ -222,11 +239,41 @@
         places = new google.maps.places.PlacesService(map);
         // When the user selects an address from the dropdown, populate the address
         // fields in the form.
-        autocomplete.addListener('place_changed', function onPlaceChanged() {
-          infoWindow.close();
-          marker.setVisible(false);
-          var place = autocomplete.getPlace();
-          if (!place.geometry) {
+        autocomplete.addListener('place_changed', onPlaceChanged );
+        //ends autocomplete------------
+
+
+        //opções das checkbox------------
+
+        
+        /*
+        document.getElementById("chkstop").onclick = function(){
+          if(chkstop.checked){
+            var myOptions = {
+          zoom: 16,
+          center: uluru,
+          mapTypeId: google.maps.MapTypeId.ROADMAP,
+          styles: [{
+            "featureType": "transit.station.bus",
+            "stylers": [{
+              "visibility": "on"
+            }]
+          }]
+        };
+
+        var map = new google.maps.Map(document.getElementById('map'), myOptions);
+
+          }
+        }  */
+
+      }
+      //ends initmap()---------------------------------->
+
+      function onPlaceChanged() {
+        infoWindow.close();
+        marker.setVisible(false);
+        var place = autocomplete.getPlace();
+        if (!place.geometry) {
             // User entered the name of a Place that was not suggested and
             // pressed the Enter key, or the Place Details request failed.
             window.alert("No details available for input: '" + place.name + "'");
@@ -234,7 +281,7 @@
           }
           // If the place has a geometry, then present it on a map.
           if (place.geometry) {
-            
+
             map.setCenter(place.geometry.location);
             map.setZoom(16);  // Why 17? Because it looks good.
           } else {
@@ -259,6 +306,7 @@
           }
           infoWindow.setContent('<div><strong>' + place.name + '</strong><br>' + address);
           infoWindow.open(map, marker);
+<<<<<<< HEAD
         });
         //ends autocomplete------------
         
@@ -283,6 +331,98 @@
         
       }
      
+=======
+        }
+
+        function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+          infoWindow.setPosition(pos);
+          infoWindow.setContent(browserHasGeolocation ?
+            'Error: The Geolocation service failed.' :
+            'Error: Your browser doesn\'t support geolocation.');
+        }
+
+        function chkstopfunction (){
+          if (document.getElementById("chkstop").checked){
+            initMap();
+          }else{
+            initMap();
+          }
+        }
+        function chksbusfunction (){
+
+        }
+
+
+
+        var button = document.getElementById('searchbutton');
+
+
+        button.onclick = function () {
+         //window.alert("Entrou no clicar botaõ");
+         var inputb = document.getElementById('autocompleteb');
+
+         var searchBox = new google.maps.places.SearchBox(inputb);
+        //map.controls[google.maps.ControlPosition.TOP_LEFT].push(inputb);//faz sumir a textbox
+
+        map.addListener('bounds_changed', function() {
+          searchBox.setBounds(map.getBounds());
+        });
+        var markers = [];
+        // Listen for the event fired when the user selects a prediction and retrieve
+        // more details for that place.
+        searchBox.addListener('places_changed', function() {
+          var places = searchBox.getPlaces();
+          //window.alert("Entrou no addlistener");
+          if (places.length == 0) {
+            return;
+            //window.alert("retornou 0");
+          }
+
+          // Clear out the old markers.
+          markers.forEach(function(marker) {
+            marker.setMap(null);
+            //window.alert("Entrou reseta marker");
+          });
+          markers = [];
+
+          // For each place, get the icon, name and location.
+          var bounds = new google.maps.LatLngBounds();
+          places.forEach(function(place) {
+            if (!place.geometry) {
+              console.log("Returned place contains no geometry");
+              return;
+            }
+            var icon = {
+              url: place.icon,
+              size: new google.maps.Size(71, 71),
+              origin: new google.maps.Point(0, 0),
+              anchor: new google.maps.Point(17, 34),
+              scaledSize: new google.maps.Size(25, 25)
+            };
+            //window.alert("Entrou no places");
+            // Create a marker for each place.
+            markers.push(new google.maps.Marker({
+              map: map,
+              icon: icon,
+              title: place.name,
+              position: place.geometry.location
+            }));
+
+            if (place.geometry.viewport) {
+              // Only geocodes have viewport.
+              bounds.union(place.geometry.viewport);
+            } else {
+              bounds.extend(place.geometry.location);
+            }
+          });
+          //window.alert("acho que seta mapa");
+          //map.setCenter(places.geometry.location);
+          map.fitBounds(bounds);
+        });
+      }
+
+
+>>>>>>> 5524adac6e87e70cb4e079dafbc1e57f94e74a3e
     </script>
     <script
     async defer
