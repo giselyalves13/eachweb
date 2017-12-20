@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- As 3 meta tags acima *devem* vir em primeiro lugar dentro do `head`; qualquer outro conteúdo deve vir *após* essas tags -->
+  <title>Cadê meu BUSÃO</title>
+
+  <!-- Bootstrap -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/estilo.css" rel="stylesheet">
+  <!-- HTML5 shim e Respond.js para suporte no IE8 de elementos HTML5 e media queries -->
+  <!-- ALERTA: Respond.js não funciona se você visualizar uma página file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+
+  <script type="text/javascript">
+
+            var httpRequest;
+
+            function fazerRequisicao(){
+
+              
+
+                if(window.XMLHttpRequest){
+                    httpRequest = new XMLHttpRequest();
+                }else if(window.ActiveXObject){
+                    try{
+
+                        httpRequest = new ActiveXObject("Msxml2.XMLHTTP");
+
+                    }catch(e){
+
+                        try{
+
+                            httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
+
+                        }catch(e){
+
+                            alert("Impossível instanciar o objeto XMLHttpRequest para esse navegador/versão");
+
+                        }
+
+                    }
+                }
+
+                if(!httpRequest){
+                    alert("Erro ao tentar criar uma instância do objeto XMLHttpRequest");
+                    return false;
+                }
+
+                httpRequest.onreadystatechange = situacaoRequisicao;
+
+                httpRequest.open("POST", "http://api.olhovivo.sptrans.com.br/v2.1" );
+                httpRequest.send("/Login/Autenticar?token=86fbf111680b6df15e2c4ce11bfa1e8d27907ae38eb7c3e3412585217793c067");
+
+            }
+
+            function situacaoRequisicao(){
+
+                if(httpRequest.readyState == 4){
+                    
+                    if(httpRequest.status == 200){
+
+                        document.getElementById('div_opcoes').innerHTML = httpRequest.responseText;
+
+                    }
+
+                }
+
+            }
+
+        </script>
+
+
+  </head>
+  <body>
+    <!-- /                   /////////////////////COMEÇO MENU              --> 
+
+    <nav class="navbar navbar-inverse navbar-fixed-top navbar-transparente">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+
+          <a class="navbar-brand" href="index.php"><b>Cadê meu BUSÃO</b></a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <div class="dropdown">
+            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+              Devs
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-left" aria-labelledby="dropdownMenu1">
+              <li>Gisely Alves Brandão:<br> <b> 8921454</b> <br></li><br>
+              <li>Douglas Mizuma:<br> <b> 8920964</b> <br></li><br>
+              
+            </ul>
+          </div>
+        </div><!-- /.navbar-collapse -->
+
+      </div><!-- /.container-fluid -->
+    </nav>
+    <!-- /                   /////////////////////FIM MENU              --> 
+    <div class="container">
+      <form method="POST" action="http://api.olhovivo.sptrans.com.br/v2.1.">
+        
+      </form>
+      <section class="opcoes">
+        <div class="opt">
+          <div class="input-group">
+            <input id="autocompleteb" type="text"  class="form-control"  placeholder="Escreva o endereço" ">
+            <span class="input-group-btn">
+              <button id="searchbutton" class="btn btn-default" type="button" onclick="clicarbut()">Buscar</button>
+
+            </span>
+          </div><!-- /input-group -->
+          <div class="input-group" id="div_opcoes" >
+            <span class="chk">
+              <input type="checkbox" id="chkbus" onclick="fazerRequisicao()" aria-label="..."> Ônibus em movimento
+            </span>
+            <span class="chk">
+              <input type="checkbox" id="chkstop" onclick="atualizamap()" aria-label="..."> Paradas de ônibus
+            </span>
+          </div><!-- /input-group -->           
+        </div>
+      </section>
+      <section class="mapa">
+        <div id="map">
+        </div>
+      </section>
+    </div>
+   
+
+    <script>
+      var map, places, infoWindow, marker, centro;
+      var autocomplete;
+      var componentForm = {
+        street_number: 'short_name',
+        route: 'long_name',
+        locality: 'long_name',
+        administrative_area_level_1: 'short_name',
+        country: 'long_name',
+        postal_code: 'short_name'
+      };
+      var button = document.getElementById('searchbutton');
+
+      function get_location() {
+        navigator.geolocation.getCurrentPosition(show_map);
+      }
+
+      var latitude;
+      var longitude;
+      function show_map(position) {
+        latitude = position.coords.latitude;
+        longitude = position.coords.longitude;
+        // let's show a map or do something interesting!
+      }
+      //dar alert no lat e long
+      function initMap() {
+        var uluru = {lat: -23.481996 , lng: -46.500503};
+        var chkstop = document.getElementById("chkstop");
+        var myOptions;
+        if(chkstop.checked){
+          myOptions = {
+            zoom: 16,
+            center: uluru,
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            styles: [{
+              "featureType": "transit.station.bus",
+              "stylers": [{
+                "visibility": "on"
+              }]
+            }]
+          };
+        }else{
+          myOptions = {
+            zoom: 16,
+            center: uluru,
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            styles: [{
+              "featureType": "transit.station.bus",
+              "stylers": [{
+                "visibility": "off"
+              }]
+            }]
+          };
+        }
+        
+        map = new google.maps.Map(document.getElementById('map'), myOptions);
+
+        infoWindow = new google.maps.InfoWindow({map: map});
+
+
+        // Try HTML5 geolocation.
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            var pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+            infoWindow.setPosition(pos);
+            infoWindow.setContent('Location found.');
+            map.setCenter(pos);
+          }, function() {
+            handleLocationError(true, infoWindow, map.getCenter());
+          });
+        } else {
+          // Browser doesn't support Geolocation
+          handleLocationError(false, infoWindow, map.getCenter());
+        }
+
+        
+
+
+        marker = new google.maps.Marker({
+
+          map: map,
+          anchorPoint: new google.maps.Point(0, -29)
+        });
+        
+        // Create the autocomplete object, restricting the search to geographical------------------
+        // location types.
+        autocomplete = new google.maps.places.Autocomplete(
+          /** @type {!HTMLInputElement} */(document.getElementById('autocompleteb')),
+          {types: ['geocode']});
+        places = new google.maps.places.PlacesService(map);
+        // When the user selects an address from the dropdown, populate the address
+        // fields in the form.
+        autocomplete.addListener('place_changed', onPlaceChanged );
+        //ends autocomplete------------
+
+      }
+
+    
+      
+      
+      function onPlaceChanged() {
+        infoWindow.close();
+        marker.setVisible(false);
+        var place = autocomplete.getPlace();
+         button.onclick = clicarbut();
+        if (!place.geometry) {
+            // User entered the name of a Place that was not suggested and
+            // pressed the Enter key, or the Place Details request failed.
+            //window.alert("No details available for input: '" + place.name + "'");
+            return;
+          }
+          // If the place has a geometry, then present it on a map.
+          if (place.geometry) {
+
+            map.setCenter(place.geometry.location);
+            centro = place.geometry.location;
+            map.setZoom(16);  // Why 17? Because it looks good.
+          } else {
+            document.getElementById('autocompleteb').placeholder = 'Invalido, escreva o endereço novamente';
+          }
+          marker.setIcon(/** @type {google.maps.Icon} */({
+            url: place.icon,
+            size: new google.maps.Size(71, 71),
+            origin: new google.maps.Point(0, 0),
+            anchor: new google.maps.Point(17, 34),
+            scaledSize: new google.maps.Size(35, 35)
+          }));
+          marker.setPosition(place.geometry.location);
+          marker.setVisible(true);
+          var address = '';
+          if (place.address_components) {
+            address = [
+            (place.address_components[0] && place.address_components[0].short_name || ''),
+            (place.address_components[1] && place.address_components[1].short_name || ''),
+            (place.address_components[2] && place.address_components[2].short_name || '')
+            ].join(' ');
+          }
+          infoWindow.setContent('<div><strong>' + place.name + '</strong><br>' + address);
+          infoWindow.open(map, marker);
+
+        }
+        //ends autocomplete------------
+        
+      
+      //ends initmap()---------------------------------->
+
+
+      function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(browserHasGeolocation ?
+          'Error: The Geolocation service failed.' :
+          'Error: Your browser doesn\'t support geolocation.');
+      }
+
+      function atualizamap(){
+        var myOptions;
+        if(chkstop.checked){
+          myOptions = {
+            zoom: 16,
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            styles: [{
+              "featureType": "transit.station.bus",
+              "stylers": [{
+                "visibility": "on"
+              }]
+            }]
+          };
+        }else{
+          myOptions = {
+            zoom: 16,
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            styles: [{
+              "featureType": "transit.station.bus",
+              "stylers": [{
+                "visibility": "off"
+              }]
+            }]
+          };
+        }
+               
+            map.setOptions(myOptions);
+        
+  
+
+      }
+        
+      
+      
+
+
+
+
+
+        function clicarbut() {
+         //window.alert("Entrou no clicar botaõ");
+          var inputb = document.getElementById('autocompleteb');
+
+           var searchBox = new google.maps.places.SearchBox(inputb);
+          //map.controls[google.maps.ControlPosition.TOP_LEFT].push(inputb);//faz sumir a textbox
+
+          map.addListener('bounds_changed', function() {
+            searchBox.setBounds(map.getBounds());
+          });
+          var markers = [];
+          // Listen for the event fired when the user selects a prediction and retrieve
+          // more details for that place.
+          searchBox.addListener('places_changed', function() {
+            var places = searchBox.getPlaces();
+            //window.alert("Entrou no addlistener");
+            if (places.length == 0) {
+              return;
+              //window.alert("retornou 0");
+            }
+
+            // Clear out the old markers.
+            markers.forEach(function(marker) {
+              marker.setMap(null);
+              //window.alert("Entrou reseta marker");
+            });
+          markers = [];
+
+          // For each place, get the icon, name and location.
+          var bounds = new google.maps.LatLngBounds();
+          places.forEach(function(placex) {
+            if (!placex.geometry) {
+              console.log("Returned place contains no geometry");
+              return;
+            }
+            var icon = {
+              url: placex.icon,
+              size: new google.maps.Size(71, 71),
+              origin: new google.maps.Point(0, 0),
+              anchor: new google.maps.Point(17, 34),
+              scaledSize: new google.maps.Size(25, 25)
+            };
+            //window.alert("Entrou no places");
+            // Create a marker for each place.
+            markers.push(new google.maps.Marker({
+              map: map,
+              icon: icon,
+              title: placex.name,
+              position: placex.geometry.location
+            }));
+
+            if (placex.geometry.viewport) {
+              // Only geocodes have viewport.
+              bounds.union(placex.geometry.viewport);
+            } else {
+              bounds.extend(placex.geometry.location);
+            }
+          });
+          //window.alert("acho que seta mapa");
+          //map.setCenter(places.geometry.location);
+          map.fitBounds(bounds);
+        });
+      }
+
+
+    </script>
+    <script
+    async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBhtCsRC_ySr3OyK8KWUAfqCfII8stZYv4&libraries=places&callback=initMap">
+  </script>
+  <!-- jQuery (obrigatório para plugins JavaScript do Bootstrap) -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <!-- Inclui todos os plugins compilados (abaixo), ou inclua arquivos separadados se necessário -->
+  <script src="js/bootstrap.min.js"></script>
+</body>
+</html>
